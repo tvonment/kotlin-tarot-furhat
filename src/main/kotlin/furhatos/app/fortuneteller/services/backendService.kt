@@ -136,7 +136,7 @@ class BackendServiceImpl: BackendService {
 
             val responseString = response.body?.string()
             val responseJson = gson.fromJson(responseString, JsonObject::class.java)
-            SessionState.session = Session( responseJson.get("id").asString, responseJson.get("topic").asString, mutableListOf(), mutableListOf())
+            SessionState.session = Session( responseJson.get("id").asString, responseJson.get("topic").asString, mutableListOf(), mutableListOf(), "")
             callback(true)
         }
     }
@@ -200,7 +200,7 @@ class BackendServiceImpl: BackendService {
             .build()
 
         val request = Request.Builder()
-            .url("$backendBaseUrl/sessions/answerOpenQuestion")
+            .url("$backendBaseUrl/sessions/openQuestion")
             .header("Content-Type", "application/json")
             .patch(jsonPayload.toRequestBody("application/json".toMediaType()))
             .build()

@@ -8,6 +8,8 @@ import furhatos.event.Event
 import furhatos.flow.kotlin.State
 import furhatos.flow.kotlin.state
 import furhatos.flow.kotlin.*
+import furhatos.nlu.common.No
+import furhatos.nlu.common.Yes
 
 val ReadFortune: State = state(Parent) {
 
@@ -30,13 +32,22 @@ val ReadFortune: State = state(Parent) {
     onEvent<FortuneReceived> {
         log.debug("ID Session: {}", SessionState.session!!.id)
         log.debug("Topic Session: {}", SessionState.session!!.topic)
+        val fortuneSummary: String = SessionState.session!!.fortuneSummary
+        furhat.say(fortuneSummary)
+        furhat.ask("Do you want me to read the full fortune for every card?")
+    }
 
+    onResponse<Yes> {
         val fortune = SessionState.session!!.fortune
         for (f in fortune) {
             log.debug("Fortune: {}, {}", f.content, f.gesture)
             furhat.gesture(f.getGesture())
             furhat.say(f.content)
         }
+        goto(OpenQuestions)
+    }
+
+    onResponse<No> {
         goto(OpenQuestions)
     }
 }

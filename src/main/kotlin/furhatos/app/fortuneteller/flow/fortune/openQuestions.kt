@@ -20,17 +20,20 @@ val OpenQuestions: State = state(Parent) {
     }
 
     onResponse {
-        val question = it.text
-        backendService.answerOpenQuestion(question) { response: Boolean ->
-            if (response) {
-                furhat.run {
-                    raise(AnswerReceived(true))
+        if (it.intent is DoneIntent || it.intent is Goodbye || it.intent is No) {
+            goto(End)
+        } else {
+            val question = it.text
+            backendService.answerOpenQuestion(question) { response: Boolean ->
+                if (response) {
+                    furhat.run {
+                        raise(AnswerReceived(true))
+                    }
+                } else {
+                    furhat.say("Sorry something went wrong.")
                 }
-            } else {
-                furhat.say("Sorry something went wrong.")
             }
         }
-
     }
 
     onEvent<AnswerReceived> {
@@ -39,15 +42,15 @@ val OpenQuestions: State = state(Parent) {
     }
 
     onResponse<No> {
-        goto(Idle)
+        goto(End)
     }
 
     onResponse<DoneIntent> {
-        goto(Idle)
+        goto(End)
     }
 
     onResponse<Goodbye> {
-        goto(Idle)
+        goto(End)
     }
 }
 

@@ -21,7 +21,31 @@ val ReadCardsByVoice: State = state(Parent) {
         } else {
             val index = count + 1
             log.debug("Reinitialize Index: $index")
-            CardEvaluationState.clear("What can you see on the $index. card?", index)
+            var cardIndex = ""
+            if (index == 1) {
+                cardIndex = "first"
+            } else if (index == 2) {
+                cardIndex = "second"
+            } else if (index == 3) {
+                cardIndex = "third"
+            } else if (index == 4) {
+                cardIndex = "fourth"
+            } else if (index == 5) {
+                cardIndex = "fifth"
+            } else if (index == 6) {
+                cardIndex = "sixth"
+            } else if (index == 7) {
+                cardIndex = "seventh"
+            } else if (index == 8) {
+                cardIndex = "eighth"
+            } else if (index == 9) {
+                cardIndex = "ninth"
+            } else if (index == 10) {
+                cardIndex = "tenth"
+            } else {
+                cardIndex = "$index"
+            }
+            CardEvaluationState.clear("Please describe what you can see on the $cardIndex card?", index)
             goto(DescribeCard)
         }
     }

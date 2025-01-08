@@ -5,4 +5,5 @@ data class Session (
     var topic: String,
     var cards: MutableList<Card>,
     var fortune: MutableList<Fortune>,
+    var fortuneSummary: String
 )
